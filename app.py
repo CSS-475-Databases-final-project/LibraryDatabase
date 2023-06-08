@@ -489,7 +489,7 @@ def checkout():
 def librarianStart():
     print('Request for librarian page received')
     return render_template('librarian.html')
-
+# functionality for the overdue section of the librarian page, called when search button is pressed
 @app.route('/librarianOverdue', methods=['POST'])
 def searchOverdue():
     global cursor
@@ -498,10 +498,13 @@ def searchOverdue():
     errorMessage = ""
 
 
-
+    # input from user
     Search = request.form.get('searchQuery')
     if len(Search) > 0:
         try:
+            # check if there is a customer matching the number if theres input
+            # if no input, search is blank as to not append anything to the query
+            # If no customer matches the input, then an error is reported
             cursor.execute(
                 "SELECT CUSTOMER.Library_card_number "
                 "FROM CUSTOMER "
@@ -522,6 +525,8 @@ def searchOverdue():
         Search = ""
 
     try:
+        # find all overdue books in the library system, if a correct customer 
+        # was input, then append the search query
         cursor.execute(
             ##HAD TO HARD CODE DATE, 'NOW' ISNT WORKING
             "SELECT BOOK.title, CHECKED.Name, CHECKED.Return_date "
@@ -552,12 +557,14 @@ def searchOverdue():
 
 
 @app.route('/librarian', methods=['POST'])
+# Functionality for adding a book, runs when add button is clicked
 def addBook():
     global cnxn
     global cursor
     tempTable = None
     errorMessage = ""
 
+    # get user inputs
     ISBN = request.form.get('ISBN')
     Title = request.form.get('Title')
     Year_published = request.form.get('Year_published')
@@ -567,6 +574,7 @@ def addBook():
     Author_ID = request.form.get('Author_ID')
 
     try:
+        # check if book already exists
         cursor.execute(
             "SELECT BOOK.ISBN "
             "FROM BOOK "
@@ -582,6 +590,7 @@ def addBook():
         print(err.msg)
         errorMessage = "ERROR: Bad Inputs"
     try:
+        # check if author exists to write the new book
         cursor.execute(
             "SELECT AUTHOR.Author_ID "
             "FROM AUTHOR "
@@ -598,6 +607,7 @@ def addBook():
         errorMessage = "ERROR: Bad Inputs"
 
     try:
+        # actual insertion from user info
         print(Title)
         cursor.execute(
             "INSERT INTO BOOK (ISBN, Title, Year_published, Genre, Publisher, Language, Author_ID) VALUES ('" + ISBN +"', '" + Title + "', " + Year_published + ", '" + Genre + "', '" + Publisher + "', '" + Language + "', '" + Author_ID + "');"
