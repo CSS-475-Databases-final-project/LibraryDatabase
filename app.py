@@ -35,6 +35,7 @@ def hello():
     header2 = []
     search = ""
     locations = ""
+    #Searches for book by title
     if request.form['searchbutton'] == 'title':
         name = request.form.get('name')
         try:
@@ -88,6 +89,7 @@ def hello():
         header2.append("Next Return Date (yy-mm-dd)")
         search = "Searching for books with '" + name + "' in Title" 
         locations = "Locations for books with '" + name + "' in Title" 
+    #Searches for book by genre
     elif request.form['searchbutton'] == 'genre':
         name = request.form.get('name')
         try:
@@ -139,6 +141,7 @@ def hello():
         header2.append("Next Return Date (yy-mm-dd)")
         search = "Searching for books with genre '" + name + "'" 
         locations = "Locations for books with genre '" + name + "'" 
+    #Searches for book by ISBN
     elif request.form['searchbutton'] == 'ISBN':
         name = request.form.get('name')
         try:
@@ -189,7 +192,8 @@ def hello():
         header2.append("Copies Available")
         header2.append("Next Return Date (yy-mm-dd)")
         search = "Searching for books with ISBN '" + name + "'" 
-        locations = "Locations for books with ISBN '" + name + "'" 
+        locations = "Locations for books with ISBN '" + name + "'"
+    #Searches for book by Year Published
     elif request.form['searchbutton'] == 'Year Published':
         name = request.form.get('name')
         try:
@@ -241,6 +245,7 @@ def hello():
         header2.append("Next Return Date (yy-mm-dd)")
         search = "Searching for books with Publish Year '" + name + "'" 
         locations = "Locations for books with Publish Year '" + name + "'" 
+    #Searches for book by Publisher
     elif request.form['searchbutton'] == 'Publisher':
         name = request.form.get('name')
         try:
@@ -292,6 +297,7 @@ def hello():
         header2.append("Next Return Date (yy-mm-dd)")
         search = "Searching for books with Publisher with'" + name + "'" 
         locations = "Locations for books with Publisher with'" + name + "'" 
+    #Searches for book by language
     elif request.form['searchbutton'] == 'Language':
         name = request.form.get('name')
         try:
@@ -344,6 +350,7 @@ def hello():
         search = "Searching for books with Language with '" + name + "'" 
 
         locations = "Locations for books with Language with '" + name + "'" 
+    #Searches for book by Author
     elif request.form['searchbutton'] == 'Author':
         name = request.form.get('name')
         try:
