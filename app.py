@@ -417,6 +417,7 @@ def checkout():
     temp = None
     errorMessage = ""
     try:
+        #Get ID for next insert
         cursor.execute(
             "SELECT MAX(Reference_ID) FROM BOOKS_CHECKED_OUT")
         
@@ -448,6 +449,7 @@ def checkout():
         except mysql.connector.Error as err:
             print(err.msg)
             errorMessage = "Bad Inputs"
+        #Make sure the books exists and the number of copies are available
         if(tempTable != None and len(tempTable) != 1):
             errorMessage = "Book at address not found"
         if(tempTable != None and len(tempTable) == 1):
@@ -455,6 +457,7 @@ def checkout():
                 errorMessage = "Checkout Failed, All copies checked out"
             else:
                 success = True
+                #Insert a new checkout into the books checked out table
                 try:
                     print("INSERT INTO BOOKS_CHECKED_OUT (Reference_ID, Customer_library_card, Book_ISBN, Address, Zip_code, Return_date) VALUES (" + str(checkoutid) + ", " + customer + ", '" + isbn + "', '" + address + "', " + zip + ", DATE_ADD(now(), INTERVAL 7 DAY));")
                     cursor.execute(
@@ -467,6 +470,7 @@ def checkout():
                     success = False
                 if(success == True):
                     try:
+                        #Get all books checked out by the customer
                         cursor.execute(
                             "Select Book_ISBN, Address, Zip_code, return_date FROM BOOKS_CHECKED_OUT WHERE Customer_library_card = '" + customer + "';")
                         tabledata = cursor.fetchall()
